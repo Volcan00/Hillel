@@ -55,9 +55,9 @@ def currency_convert():
         user_currency_1 = request.form['currency_1']
         user_date = request.form['date']
         user_currency_2 = request.form['currency_2']
-        res_1 = cursor.execute(f'SELECT buy_rate, {sale_rate} FROM {currency} WHERE {bank} = "{user_bank}" and {date_exchange} = "{user_date}" and {currency} = "{user_currency_1}"')
+        res_1 = cursor.execute(f'SELECT buy_rate, sale_rate FROM currency WHERE bank = "{user_bank}" and date_exchange = "{user_date}" and currency = "{user_currency_1}"')
         buy_rate_1, sale_rate_1 = res_1.fetchone()
-        res_2 = cursor.execute(f'SELECT {buy_rate}, {sale_rate} FROM {currency} WHERE {bank} = "{user_bank}" and {date_exchange} = "{user_date}" and {currency} = "{user_currency_2}"')
+        res_2 = cursor.execute(f'SELECT buy_rate, sale_rate FROM currency WHERE bank = "{user_bank}" and date_exchange = "{user_date}" and currency = "{user_curency_2}"')
         buy_rate_2, sale_rate_2 = res_2.fetchone()
 
         cur_exchange_buy = buy_rate_2 / buy_rate_1

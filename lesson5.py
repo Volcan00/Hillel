@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from requests import request 
-import sqlite3
+from db_manager import *
 
 app = Flask(__name__)
 

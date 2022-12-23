@@ -1,0 +1,9 @@
+FROM python:3.11
+
+WORKDIR /python-exchange_rate_app
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+COPY . /exchange_rate_app
+
+CMD ["python3", "lesson8.py"]

@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  web:
+    build: 
+      dockerfile: Dockerfile
+    ports:
+      - "8000:5000"
+    command: python3 lesson6.py
+    environment: 
+      - RABBIT_HOST=rabbitmq_container
+    depends_on:
+      - rabbitmq_container
+  rabbitmq_container:
+    image: "rabbitmq:3.11.5-management"
+    ports:
+      - 5672:5672
+      - 15672:15672
+    hostname: rabbitmq_container
+  celery_working:
+    build: .
+    command: celery -A celery_working worker --loglevel=info --pool=solo
+    environment: 
+      - RABBIT_HOST=rabbitmq_container

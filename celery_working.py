@@ -1,7 +1,9 @@
 from celery import Celery
 import datetime
+import os
 
-app = Celery('celery_working', broker="pyamqp://guest@localhost//")
+rabbit_host = os.environ.get('RABBIT_HOST', 'localhost')
+app = Celery('celery_working', broker=f"pyamqp://guest@{rabbit_host}//")
 
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):

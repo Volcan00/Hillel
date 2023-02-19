@@ -6,9 +6,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:5000"
-    command: python3 lesson6.py
+    command: python3 add12.py
     environment: 
       - RABBIT_HOST=rabbitmq_container
+      - DB_HOST=pg_db_container
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
     depends_on:
       - rabbitmq_container
   rabbitmq_container:
@@ -22,3 +25,15 @@ services:
     command: celery -A celery_working worker --loglevel=info --pool=solo
     environment: 
       - RABBIT_HOST=rabbitmq_container
+      - DB_HOST=pg_db_container
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+
+  db:
+    image: "postgres:14.1-alpine"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    hostname: pg_db_container

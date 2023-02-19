@@ -1,1 +1,1 @@
-x + y = 3 2023-01-15 21:17:22.189459
+CREATE TABLE "currency" ("bank"	TEXT NOT NULL, "currency"	TEXT NOT NULL, "date_exchange"	TEXT NOT NULL, "buy_rate"	REAL NOT NULL, "sale_rate"	REAL NOT NULL, "id"	INTEGER NOT NULL UNIQUE, PRIMARY KEY("id" AUTOINCREMENT))

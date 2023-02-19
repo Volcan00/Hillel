@@ -1,0 +1,3 @@
+create table currency(bank text not null, currency text not null, date_exchange text not null, buy_rate float not null, sale_rate float not null, id serial not null constraint id primary key);
+insert into currency (bank, currency, date_exchange, buy_rate, sale_rate) values ('Privatbank', 'UAH', '2023-02-19', 0.023, 0.025);
+insert into currency (bank, currency, date_exchange, buy_rate, sale_rate) values ('Privatbank', 'USD', '2023-02-19', 1, 1);

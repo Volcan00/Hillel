@@ -1,6 +1,9 @@
 from celery import Celery
 import datetime
 import os
+import models_db
+import al_db
+from sqlalchemy.orm import Session
 
 rabbit_host = os.environ.get('RABBIT_HOST', 'localhost')
 app = Celery('celery_working', broker=f"pyamqp://guest@{rabbit_host}//")
@@ -12,8 +15,9 @@ def setup_periodic_tasks(sender, **kwargs):
 @app.task
 def add(x, y):
     print(x + y)
-    with open("test.txt", "w") as f:
-        f.write(f'x + y = {x+y} {datetime.datetime.now()}')
-    return x + y
+    record_1 = models_db.Currency(bank = "GGG", currency = "USD", date_exchange = "2023-02-19", buy_rate = 36.6, sale_rate = 37.45)
+    with Session(al_db.engine) as session:
+            session.add(record_1)
+            session.commit()
 
 add(1,2)

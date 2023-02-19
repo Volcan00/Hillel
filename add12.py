@@ -4,19 +4,20 @@ from celery_working import *
 import al_db
 import models_db
 from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 app = Flask(__name__)
 
 @app.route("/", methods = ['GET', 'POST'])
 def login_user():
     if request.method == 'GET':
-        al_db.init_db()
-        conn = al_db.engine.connect()
-        res1 = select([models_db.User])
-        result = conn.execute(res1)
-        print(result)
-    if request.method == 'POST':
-        return "OK"
+        record_1 = models_db.Currency(bank = "GGG", currency = "USD", date_exchange = "2023-02-19", buy_rate = 36.6, sale_rate = 37.45)
+        with Session(al_db.engine) as session:
+            session.add(record_1)
+            session.commit()
+            return "OK"
+    else: 
+        pass
     return "<p>Login!</p>"
 
 @app.route("/logout", methods = ['GET'])
@@ -46,11 +47,16 @@ def currency_convert():
         user_currency_1 = request.form['currency_1']
         user_date = request.form['date']
         user_currency_2 = request.form['currency_2']
+    
+        with Session(al_db.engine) as session:
+            statement_1 = select(models_db.Currency).filter_by(bank = user_bank, currency = user_currency_1, date_exchange = user_date)
+            currency_1 = session.scalars(statement_1).first()
+            statement_2 = select(models_db.Currency).filter_by(bank = user_bank, currency = user_currency_2, date_exchange = user_date)
+            currency_2 = session.scalars(statement_2).first()
 
-        with DBManager() as db:
-            db.generate_data()
-            buy_rate_1, sale_rate_1 = db.get_result(f'SELECT buy_rate, sale_rate FROM currency WHERE bank = "{user_bank}" and date_exchange = "{user_date}" and currency = "{user_currency_1}"')
-            buy_rate_2, sale_rate_2 = db.get_result(f'SELECT buy_rate, sale_rate FROM currency WHERE bank = "{user_bank}" and date_exchange = "{user_date}" and currency = "{user_currency_2}"')
+        buy_rate_1, sale_rate_1 = currency_1.buy_rate, currency_1.sale_rate
+        buy_rate_2, sale_rate_2 = currency_2.buy_rate, currency_2.sale_rate
+
         cur_exchange_buy = buy_rate_2 / buy_rate_1
         cur_exchange_sale = sale_rate_2 / sale_rate_1
 

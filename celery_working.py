@@ -25,3 +25,5 @@ def setup_periodic_tasks(sender, **kwargs):
 def get_bank_data_task():
     requests_bank.get_Privatbank_data()
     return True
+
+get_bank_data_task()

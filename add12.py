@@ -28,11 +28,7 @@ def logout_user():
 
 @app.route("/register", methods = ['GET', 'POST'])
 def register_user():
-    if request.method == 'GET':
-        return "OK"
-    if request.method == 'POST':
-        return "OK"
-    return "Registration form"
+    
 
 @app.route("/user_page", methods = ['GET'])
 def user_access():

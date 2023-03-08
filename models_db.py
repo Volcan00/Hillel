@@ -19,3 +19,35 @@ class Currency(Base):
 
     def __repr__(self):
         return f'User {self.bank!r}'
+
+class User(Base):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key = True, unique = True)
+    username = Column(String(50))
+    password = Column(String(120))
+    email = Column(String(120))
+    first_name = Column(String(50))
+    surname = Column(String(50))
+    tax_id = Column(Integer, default = None)
+    avatar_link = Column(String(120), default = None)
+
+    def __init__(self, username, password, email = None, first_name = None, surname = None, tax_id = None, avatar_link = None):
+        self.username = username
+        self.password = password
+        self.email = email
+        self.first_name = first_name
+        self.surname = surname
+        if tax_id is not None:
+            self.tax_id = tax_id
+        else:
+            raise Exception('User has no tax id')
+        self.avatar_link = avatar_link
+
+    def get_taxes_info(self):
+        if self.tax_id is None:
+            raise Exception("User has no tax id")
+        else:
+            return "tac_id is filled"
+
+    def __repr__(self):
+        return f"User{self.username!r}" 
